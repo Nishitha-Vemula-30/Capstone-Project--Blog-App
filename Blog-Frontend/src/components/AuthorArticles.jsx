@@ -33,7 +33,7 @@ function AuthorArticles() {
       setLoading(true);
 
       try {
-        const res = await axios.get(`http://localhost:5000/author-api/articles/${user._id}`, { withCredentials: true });
+        const res = await axios.get(`https://capstone-project-blog-app-46tv.onrender.com/author-api/articles/${user._id}`, { withCredentials: true });
 
         setArticles(res.data.payload);
       } catch (err) {
@@ -64,7 +64,7 @@ function AuthorArticles() {
 
     try {
       await axios.patch(
-        `http://localhost:5000/author-api/articles/${articleId}/status`,
+        `https://capstone-project-blog-app-46tv.onrender.com/author-api/articles/${articleId}/status`,
         { isArticleActive: false },
         { withCredentials: true }
       );
