@@ -29,7 +29,7 @@ function UserProfile() {
     const getArticles = async () => {
       setLoading(true);
       try {
-        const res = await axios.get("http://localhost:5000/user-api/articles", { withCredentials: true });
+        const res = await axios.get("https://capstone-project-blog-app-46tv.onrender.com/user-api/articles", { withCredentials: true });
 
         setArticles(res.data.payload);
       } catch (err) {
