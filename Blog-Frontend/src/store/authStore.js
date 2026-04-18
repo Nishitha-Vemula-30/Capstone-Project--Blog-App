@@ -14,7 +14,7 @@ export const useAuth=create((set)=>({
        //set loading true
        set({loading:true,error:null})
        //make api call
-       let res=await axios.post("http://localhost:5000/common-api/login",
+       let res=await axios.post("https://capstone-project-blog-app-46tv.onrender.com/common-api/login",
         userCredObj,
         {withCredentials:true})
        console.log("res is",res)
@@ -37,7 +37,7 @@ export const useAuth=create((set)=>({
             //set loading state
             set({loading:true,error:null}),
             //make logout api req
-            await axios.get("http://localhost:5000/common-api/logout",{withCredentials:true})
+            await axios.get("https://capstone-project-blog-app-46tv.onrender.com/common-api/logout",{withCredentials:true})
             //update state
             set({loading:false,
             userAuthenticate:false,
@@ -55,7 +55,7 @@ export const useAuth=create((set)=>({
     checkAuth: async () => {
       try {
         set({ loading: true });
-        const res = await axios.get("http://localhost:5000/common-api/check-auth", { withCredentials: true });
+        const res = await axios.get("https://capstone-project-blog-app-46tv.onrender.com/common-api/check-auth", { withCredentials: true });
 
         set({
           currentUser: res.data.payload,
