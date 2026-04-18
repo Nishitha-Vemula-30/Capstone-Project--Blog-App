@@ -14,8 +14,10 @@ config()//process.env
 const app=exp()  //exported by express module
 
 //use cors middleware
-app.use(cors({origin:['http://localhost:5173'] ,credentials:true}))
-
+app.use(cors({
+  origin: true,
+  credentials: true
+}))
 //add body parser middleware
 app.use(exp.json())
 //add cookie parser middleware
