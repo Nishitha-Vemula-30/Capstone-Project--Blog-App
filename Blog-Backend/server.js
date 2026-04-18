@@ -12,7 +12,7 @@ config()//process.env
 
 //create express application
 const app=exp()  //exported by express module
-
+const PORT=process.env.PORT||5000
 //use cors middleware
 app.use(cors({
   origin: true,
