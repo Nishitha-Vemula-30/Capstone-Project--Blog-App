@@ -12,7 +12,7 @@ function AuthorDashboard() {
    const navigate = useNavigate()
   const [articles,setArticles]=useState([])
   const getArticles=async()=>{
-    const resObj=await axios.get("http://localhost:5000/author-api/articles",{withCredentials:true})
+    const resObj=await axios.get("https://capstone-project-blog-app-46tv.onrender.com/author-api/articles",{withCredentials:true})
     const res=resObj.data.payload
     
   const authorArticles = res.filter(
