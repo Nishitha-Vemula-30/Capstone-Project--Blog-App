@@ -42,7 +42,7 @@ function EditArticle() {
         }
 
         const res = await axios.get(
-          `http://localhost:5000/author-api/articles/${id}`,
+          `https://capstone-project-blog-app-46tv.onrender.com/author-api/articles/${id}`,
           { withCredentials: true }
         );
 
@@ -79,7 +79,7 @@ function EditArticle() {
       const articleId = article?._id || id;
 
       const res = await axios.put(
-        "http://localhost:5000/author-api/articles",
+        "https://capstone-project-blog-app-46tv.onrender.com/author-api/articles",
         { ...data, articleId },
         { withCredentials: true }
       );
