@@ -32,7 +32,8 @@ function Register() {
     //make API req to user/author registration
     if(newUser.role==="user"){
        //make API req to user-api
-       let resObj=await axios.post("https://capstone-project-blog-app-46tv.onrender.com/user-api/users",formData)
+       let resObj=await axios.post("https://capstone-project-blog-app-46tv.onrender.com/user-api/users",formData,
+  { withCredentials: true })
       //  console.log(resObj)
       //  let res=resObj.data;
       //  console.log(res)
@@ -41,7 +42,8 @@ function Register() {
       }
     }
     if(newUser.role==="author"){
-        let resObj=await axios.post("https://capstone-project-blog-app-46tv.onrender.com/author-api/users",formData)
+        let resObj=await axios.post("https://capstone-project-blog-app-46tv.onrender.com/author-api/users",formData,
+  { withCredentials: true })
       //  console.log(resObj)
       //  let res=resObj.data;
       //  console.log(res)
