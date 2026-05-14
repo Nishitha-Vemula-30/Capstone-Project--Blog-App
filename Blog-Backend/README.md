@@ -5,7 +5,7 @@ The backend handles user authentication, blog management, database operations, f
 
 It is developed using Node.js, Express.js, and MongoDB.
 
-🚀 Features
+Features
 User Registration & Login
 JWT Authentication
 Create, Read, Update, Delete Blogs
@@ -25,7 +25,8 @@ JWT Authentication
 Multer
 Cloudinary
 dotenv
-📁 Project Structure
+
+Project Structure
 backend/
 │
 ├── config/
@@ -71,7 +72,8 @@ JWT_SECRET=your_secret_key
 CLOUD_NAME=your_cloudinary_name
 API_KEY=your_cloudinary_api_key
 API_SECRET=your_cloudinary_api_secret
-▶️ Running the Server
+
+ Running the Server
 Development Mode
 npm run dev
 Production Mode
@@ -80,7 +82,7 @@ npm start
 Server runs on:
 
 http://localhost:5000
-🗄️ Database
+ Database
 
 MongoDB is used as the database for storing:
 
@@ -91,7 +93,7 @@ Uploaded Image URLs
 
 Mongoose is used for schema design and database interaction.
 
-🔐 Authentication
+ Authentication
 
 JWT (JSON Web Token) authentication is implemented for secure access.
 
