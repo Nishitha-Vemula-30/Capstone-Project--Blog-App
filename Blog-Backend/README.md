@@ -1,113 +1,122 @@
 BlogApp Backend
 
-This is the backend server for the BlogApp project built using the MERN Stack.
-The backend handles user authentication, blog management, database operations, file uploads, and REST API services.
+This is the backend part of BlogApp developed using Node.js, Express.js and MongoDB.
+Backend handles authentication, database operations, REST APIs, blog management and file uploads.
 
-It is developed using Node.js, Express.js, and MongoDB.
+1. Generate package.json
+npm init -y
+Add "type":"module" in package.json for using import/export syntax.
 
-Features
-User Registration & Login
-JWT Authentication
-Create, Read, Update, Delete Blogs
-Protected Routes
-MongoDB Database Integration
-REST API Architecture
-Image Upload Support using Multer & Cloudinary
-Error Handling Middleware
-Role-Based Access (User / Author)
-⚙️ Tech Stack
-Backend
-Node.js
-Express.js
-MongoDB
-Mongoose
-JWT Authentication
-Multer
-Cloudinary
-dotenv
+2. Create server.js
+server.js is the entry point of backend application.
 
-Project Structure
-backend/
-│
-├── config/
-│   ├── db.js
-│   └── cloudinary.js
-│
-├── controllers/
-│
-├── middleware/
-│   ├── authMiddleware.js
-│   └── multer.js
-│
-├── models/
-│   ├── User.js
-│   └── Article.js
-│
-├── routes/
-│   ├── authRoutes.js
-│   └── articleRoutes.js
-│
-├── utils/
-│   └── cloudinaryUpload.js
-│
-├── .env
-├── .gitignore
-├── package.json
-└── server.js
-🔧 Installation & Setup
-1. Clone the Repository
-git clone https://github.com/Nishitha-Vemula-30/Capstone-Project--Blog-App.git
-2. Navigate to Backend Folder
-cd backend
-3. Install Dependencies
-npm install
-4. Create .env File
+3. Install Express and Create HTTP Server
+npm i express
 
-Create a .env file in the root directory and add:
+Express is used to create server and REST APIs.
 
+4. Create .gitignore File
+
+Used to ignore unnecessary files like:
+node_modules/
+.env
+
+5. Create .env File
+Used to store sensitive data securely.
+
+Example:
 PORT=5000
-MONGO_URI=your_mongodb_connection
+MONGO_URI=your_mongodb_url
 JWT_SECRET=your_secret_key
 
-CLOUD_NAME=your_cloudinary_name
-API_KEY=your_cloudinary_api_key
-API_SECRET=your_cloudinary_api_secret
+Install dotenv:
+npm i dotenv
+Sensitive data should not be pushed to GitHub repository.
 
- Running the Server
-Development Mode
+Connect MongoDB Database
+MongoDB Connection Flow
+REST API → Mongoose (ODM Tool) → MongoDB Server
+
+Mongoose is an ODM tool used for:
+
+Schema Design
+Validation
+Database Operations
+
+Steps
+a. Install Mongoose
+npm i mongoose
+b. Create Schema
+Schema acts as blueprint of document and validates request data.
+c. Create Model
+Model is created using schema.
+d. Perform Database Operations
+Operations performed:
+Insert Data
+Update Data
+Delete Data
+Fetch Data
+Middlewares Used
+Express JSON Middleware
+Error Handling Middleware
+JWT Verification Middleware
+
+Middleware works between request and response.
+
+Authentication
+JWT Authentication is implemented for protected routes.
+
+Features:
+User Login
+Token Generation
+Token Verification
+Protected Routes
+
+Public routes do not require token verification.
+
+REST APIs
+
+REST APIs are created for:
+
+User Registration
+Login
+Blog CRUD Operations
+Comments
+File Uploads
+
+Multer and Cloudinary are used for image uploads.
+
+Flow:
+
+Client → Backend → Cloudinary → Database
+
+Only image URLs are stored in MongoDB.
+
+Project Structure
+Blog-Backend/
+│
+├── APIs/
+├── config/
+├── middlewares/
+├── models/
+├── services/
+│
+├── .gitignore
+├── README.md
+├── package.json
+├── package-lock.json
+├── req.http
+└── server.js
+Run Backend Server
+
+Install dependencies:
+
+npm install
+
+Run server:
+
 npm run dev
-Production Mode
-npm start
 
 Server runs on:
 
 http://localhost:5000
- Database
-
-MongoDB is used as the database for storing:
-
-Users
-Blog Articles
-Comments
-Uploaded Image URLs
-
-Mongoose is used for schema design and database interaction.
-
- Authentication
-
-JWT (JSON Web Token) authentication is implemented for secure access.
-
-Features:
-
-User Login
-Token Generation
-Protected Routes
-Authorization Middleware
-☁️ File Uploads
-
-Images are uploaded using:
-
-Multer
-Cloudinary
-
-Only image URLs are stored in MongoDB.
