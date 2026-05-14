@@ -1,7 +1,8 @@
 BlogApp Backend
+---------------
 
-This is the backend part of BlogApp developed using Node.js, Express.js and MongoDB.
-Backend handles authentication, database operations, REST APIs, blog management and file uploads.
+•This is the backend part of BlogApp developed using Node.js, Express.js and MongoDB.
+•Backend handles authentication, database operations, REST APIs, blog management and file uploads.
 
 1. Generate package.json
 npm init -y
@@ -29,21 +30,21 @@ PORT=5000
 MONGO_URI=your_mongodb_url
 JWT_SECRET=your_secret_key
 
-Install dotenv:
+•Install dotenv:
 npm i dotenv
 Sensitive data should not be pushed to GitHub repository.
 
-Connect MongoDB Database
+•Connect MongoDB Database
 MongoDB Connection Flow
 REST API → Mongoose (ODM Tool) → MongoDB Server
 
-Mongoose is an ODM tool used for:
+•Mongoose is an ODM tool used for:
 
 Schema Design
 Validation
 Database Operations
 
-Steps
+•Steps
 a. Install Mongoose
 npm i mongoose
 b. Create Schema
@@ -61,9 +62,9 @@ Express JSON Middleware
 Error Handling Middleware
 JWT Verification Middleware
 
-Middleware works between request and response.
+•Middleware works between request and response.
 
-Authentication
+•Authentication
 JWT Authentication is implemented for protected routes.
 
 Features:
@@ -72,11 +73,12 @@ Token Generation
 Token Verification
 Protected Routes
 
-Public routes do not require token verification.
+•Public routes do not require token verification.
 
 REST APIs
+--------
 
-REST APIs are created for:
+•REST APIs are created for:
 
 User Registration
 Login
@@ -84,15 +86,15 @@ Blog CRUD Operations
 Comments
 File Uploads
 
-Multer and Cloudinary are used for image uploads.
+•Multer and Cloudinary are used for image uploads.
 
 Flow:
 
 Client → Backend → Cloudinary → Database
 
-Only image URLs are stored in MongoDB.
+•Only image URLs are stored in MongoDB.
 
-Project Structure
+•Project Structure
 Blog-Backend/
 │
 ├── APIs/
@@ -107,16 +109,13 @@ Blog-Backend/
 ├── package-lock.json
 ├── req.http
 └── server.js
-Run Backend Server
 
-Install dependencies:
 
+•Install dependencies:
 npm install
 
-Run server:
-
+•Run Backend Server
 npm run dev
 
-Server runs on:
-
+•Server runs on:
 http://localhost:5000
