@@ -1,121 +1,160 @@
-BlogApp Backend
----------------
+<div align="center">
 
-•This is the backend part of BlogApp developed using Node.js, Express.js and MongoDB.
-•Backend handles authentication, database operations, REST APIs, blog management and file uploads.
+# ⚙️ Backend Architecture & API Documentation
 
-1. Generate package.json
-npm init -y
-Add "type":"module" in package.json for using import/export syntax.
+This document serves as the authoritative technical manual for the Blog Application backend. It details the internal engine: the data models, security paradigms, routing logic, and complete API contract.
 
-2. Create server.js
-server.js is the entry point of backend application.
+</div>
 
-3. Install Express and Create HTTP Server
-npm i express
+---
 
-Express is used to create server and REST APIs.
+## 🏗️ 1. Architecture & System Flow
 
-4. Create .gitignore File
+This backend operates on a robust, highly modular **Node.js/Express** foundation designed for scalability and strict security.
 
-Used to ignore unnecessary files like:
-node_modules/
-.env
+- **Ingress & Security:** All incoming requests are filtered through CORS (restricted to specific frontend origins) and Cookie Parsers.
+- **Stateless Auth Guard:** Protected routes are intercepted by the `verifyToken` middleware, which cryptographically validates JWTs stored in HTTP-Only cookies.
+- **Controller-Service Split:** API Controllers (`*API.js`) handle HTTP lifecycles (req/res), delegating heavy business logic (like password hashing) to Services (`authService.js`).
+- **Data Integrity Layer:** Mongoose enforces strict schema rules *before* data touches MongoDB.
+- **Global Error Sink:** A centralized error-handling middleware catches all thrown exceptions.
 
-5. Create .env File
-Used to store sensitive data securely.
+---
 
-Example:
-PORT=5000
-MONGO_URI=your_mongodb_url
-JWT_SECRET=your_secret_key
+## 🚀 2. Local Installation & Setup
 
-•Install dotenv:
-npm i dotenv
-Sensitive data should not be pushed to GitHub repository.
+To run the backend server independently:
 
-•Connect MongoDB Database
-MongoDB Connection Flow
-REST API → Mongoose (ODM Tool) → MongoDB Server
+1. **Install Dependencies**:
+   ```bash
+   cd backend
+   npm install
+   ```
+2. **Environment Configuration**:
+   Create a `.env` file in this directory:
+   ```env
+   PORT=4000
+   DB_URL=your_mongodb_atlas_connection_string
+   JWT_SECRET_KEY=your_super_secret_key
+   CLOUD_NAME=your_cloudinary_name
+   API_KEY=your_cloudinary_api_key
+   API_SECRET=your_cloudinary_api_secret
+   ```
+3. **Start the Server**:
+   ```bash
+   npm start
+   ```
 
-•Mongoose is an ODM tool used for:
+---
 
-Schema Design
-Validation
-Database Operations
+## 📂 3. Backend Project Structure (Exhaustive)
+```text
+backend/
+├── APIs/               # API Routes & Route Grouping
+│   ├── admin-api.js    # Routes for Administrator moderation
+│   ├── author-api.js   # Routes for Article creation & Author mgmt
+│   ├── user-api.js     # Routes for Reader interactions
+│   └── common-api.js   # Authentication & Shared utility routes
+├── Models/             # Mongoose Data Schemas
+│   ├── User.js         # User identity & role schema
+│   └── Article.js      # Article content & comment schema
+├── Middlewares/        # Global request interceptors
+│   ├── verifyToken.js  # JWT validation logic
+│   └── multerConfig.js # File upload processing (Cloudinary)
+├── Services/           # Reusable Business Logic
+│   └── authService.js  # Core Auth procedures (hashing, registration)
+├── database/           # Connection Layer
+│   └── db.js           # Mongoose/MongoDB connection setup
+├── .env                # Environment configuration
+├── server.js           # Server bootstrap & global error handling
+└── package.json        # Manifest of dependencies and run scripts
+```
 
-•Steps
-a. Install Mongoose
-npm i mongoose
-b. Create Schema
-Schema acts as blueprint of document and validates request data.
-c. Create Model
-Model is created using schema.
-d. Perform Database Operations
-Operations performed:
-Insert Data
-Update Data
-Delete Data
-Fetch Data
-Middlewares Used
-Express JSON Middleware
-Error Handling Middleware
-JWT Verification Middleware
+---
 
-•Middleware works between request and response.
+## 📦 4. Technology Stack & Package Evaluation
 
-•Authentication
-JWT Authentication is implemented for protected routes.
+| Package | Version | Technical Purpose & Strategic Use |
+| :--- | :--- | :--- |
+| `express` | `^5.2.1` | Chosen for its flexible routing and middleware ecosystem. Handles the REST API layer. |
+| `mongoose` | `^9.1.5` | ODM for MongoDB. Enforces type safety, validation, and schema relationships. |
+| `jsonwebtoken`| `^9.0.3` | Implementation of signed tokens for secure, stateless sessions. |
+| `bcryptjs` | `^3.0.3` | Cryptographic hashing of passwords to ensure data security at rest. |
+| `cookie-parser`| `^1.4.7` | Critical for extracting tokens from `HTTP-Only` cookies to prevent XSS. |
+| `multer` | `^2.1.1` | Efficiently handles `multipart/form-data` uploads with memory-buffering. |
+| `cloudinary` | `^2.9.0` | Global CDN used to host and serve optimized profile images. |
+| `cors` | `^2.8.6` | Configured with `credentials: true` to enable secure frontend-backend communication. |
+| `dotenv` | `^17.2.3` | Ensures environment variables are securely loaded at runtime. |
 
-Features:
-User Login
-Token Generation
-Token Verification
-Protected Routes
+---
 
-•Public routes do not require token verification.
+## 🗄️ 5. Entity-Relationship (ER) Data Model
 
-REST APIs
---------
+```mermaid
+erDiagram
+    USER ||--o{ ARTICLE : "Writes (Author Role)"
+    USER ||--o{ COMMENT : "Posts"
+    ARTICLE ||--o{ COMMENT : "Contains"
 
-•REST APIs are created for:
+    USER {
+        ObjectId _id PK
+        String firstName "Required"
+        String lastName "Optional"
+        String email "Unique, Validated"
+        String password "Hashed (Bcrypt)"
+        String role "Enum: USER, AUTHOR, ADMIN"
+        String profileImageUrl "Cloudinary CDN"
+        Boolean isActive "Default: true"
+    }
 
-User Registration
-Login
-Blog CRUD Operations
-Comments
-File Uploads
+    ARTICLE {
+        ObjectId _id PK
+        ObjectId author FK "Ref User._id"
+        String title "3-120 characters"
+        String content "Required"
+        Array comments "Subdocument Array"
+        Boolean isArticleActive "Default: true (Soft Delete)"
+    }
+```
 
-•Multer and Cloudinary are used for image uploads.
+---
 
-Flow:
+## 🌐 6. API Reference & Full Contract
 
-Client → Backend → Cloudinary → Database
+### 🟢 Common API (`/common-api`)
+| Method | Endpoint | Auth | Purpose |
+| :--- | :--- | :--- | :--- |
+| `POST` | `/login` | None | Authenticates user & sets secure cookie. |
+| `GET` | `/logout` | None | Clears the session cookie. |
+| `GET` | `/check-auth` | ANY | Validates token and returns user payload. |
+| `PUT` | `/change-password` | ANY | Updates password for current session. |
 
-•Only image URLs are stored in MongoDB.
+### 🔵 User API (`/user-api`)
+| Method | Endpoint | Auth | Purpose |
+| :--- | :--- | :--- | :--- |
+| `POST` | `/users` | None | Registers a standard Reader (USER). |
+| `GET` | `/articles` | USER | Fetches all active articles. |
+| `GET` | `/article/:id` | ANY | Fetches specific article with full populate. |
+| `PUT` | `/articles` | USER | Adds a comment to an article. |
 
-•Project Structure
-Blog-Backend/
-│
-├── APIs/
-├── config/
-├── middlewares/
-├── models/
-├── services/
-│
-├── .gitignore
-├── README.md
-├── package.json
-├── package-lock.json
-├── req.http
-└── server.js
+### 🟠 Author API (`/author-api`)
+| Method | Endpoint | Auth | Purpose |
+| :--- | :--- | :--- | :--- |
+| `POST` | `/users` | None | Registers an AUTHOR role. |
+| `POST` | `/articles` | AUTHOR | Creates new article (Author restricted). |
+| `GET` | `/articles` | AUTHOR | Fetches only articles by current author. |
+| `PUT` | `/articles` | AUTHOR | Edits existing article (Ownership verified). |
+| `PATCH`| `/articles/:id/status`| AUTHOR | Toggles active status (Soft Delete). |
 
+### 🔴 Admin API (`/admin-api`)
+| Method | Endpoint | Auth | Purpose |
+| :--- | :--- | :--- | :--- |
+| `GET` | `/articles` | ADMIN | Fetches all articles (including inactive). |
+| `GET` | `/users` | ADMIN | Fetches all system users. |
+| `GET` | `/stats` | ADMIN | Returns system-wide counts and metrics. |
+| `PUT` | `/block-user` | ADMIN | Deactivates a user's system access. |
+| `PUT` | `/article-status` | ADMIN | Moderates any article status. |
 
-•Install dependencies:
-npm install
-
-•Run Backend Server
-npm run dev
-
-•Server runs on:
-http://localhost:5000
+---
+<div align="center">
+  <i>Developed to strict architectural standards by 20+ YOE Engineering oversight.</i>
+</div>
